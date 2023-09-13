@@ -31,6 +31,20 @@ export const loginSchema = object({
   }).min(8, 'Invalid email or password'),
 })
 
+export const updateSchema = object({
+  id: string({
+    required_error: 'Id is required',
+  }),
+  name: string({
+    required_error: 'Name is required',
+  }),
+  email: string({
+    required_error: 'Email address is required',
+  }).email('Invalid email address'),
+})
+
 export type SignUpInput = TypeOf<typeof signUpSchema>
 
 export type LoginInput = TypeOf<typeof loginSchema>
+
+export type UpdateInput = TypeOf<typeof updateSchema>
