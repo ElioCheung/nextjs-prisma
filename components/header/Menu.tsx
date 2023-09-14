@@ -18,7 +18,6 @@ export default function Menu() {
   const [id, setId] = useState('')
 
   useEffect(() => {
-    console.log('[Menu Component Effects]: ', timeStamp)
     setAuthroized(localStorage.getItem('isAuthorized') === 'true')
     setId(localStorage.getItem('userId') as string)
   }, [setAuthroized, setId, pathname, timeStamp])

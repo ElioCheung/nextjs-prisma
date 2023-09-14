@@ -1,11 +1,11 @@
 'use client'
 import Alert from '@/components/alert/Alert'
 import { User } from '@prisma/client'
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { updateUser } from '../actions'
 import { redirect } from 'next/navigation'
 import { RedirectType } from 'next/dist/client/components/redirect'
+import SubmitButton from '@/components/button/SubmitButton'
 
 export default function Profile() {
   const [msg, setMsg] = useState('')
@@ -62,12 +62,10 @@ export default function Profile() {
         <div className='w-1/2 p-5 flex items-center'>
           <label className='w-24 text-gray-400'></label>
           <div className='flex-1'>
-            <button
-              type='submit'
-              className='text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-200 rounded-xl p-2'
-            >
-              Save
-            </button>
+            <SubmitButton
+              btnText='Save'
+              className='w-full text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-200 rounded-xl p-2'
+            />
           </div>
         </div>
       </form>
