@@ -37,8 +37,9 @@ export default function Profile() {
     } else {
       setMsg('Update User Successfully')
       setStatus('Success')
-      window.location.reload()
-      // redirect('/profile', RedirectType.replace)
+      // fix: 使用redirect时由于路由未变化，导致UserLink组件无法更新
+      // window.location.reload()
+      redirect(`/profile?u=${Date.now()}`, RedirectType.replace)
     }
   }
 

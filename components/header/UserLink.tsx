@@ -4,19 +4,16 @@ import Link from 'next/link'
 import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 
-type UserLinkProps = {
-  userId: string
-}
-
-export default function UserLink({ userId }: UserLinkProps) {
+export default function UserLink() {
 
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
+    const userId = localStorage.getItem('userId') as string
     fetch(`/api/user/${userId}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(res => setUser(res))
-  }, [userId])
+  })
 
   return (
     <>
