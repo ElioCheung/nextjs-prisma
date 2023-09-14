@@ -5,7 +5,35 @@ import { useEffect, useRef, useState } from 'react'
 import { updateUser } from '../actions'
 import { redirect } from 'next/navigation'
 import { RedirectType } from 'next/dist/client/components/redirect'
-import SubmitButton from '@/components/button/SubmitButton'
+import Form, { FormItemProps } from '@/components/form/Form'
+
+const formItems: FormItemProps[] = [
+  {
+    type: 'text',
+    key: 'id',
+    required: true,
+    hidden: true,
+    readOnly: false,
+  },
+  {
+    type: 'text',
+    label: 'Name',
+    key: 'name',
+    required: true,
+    hidden: false,
+    readOnly: false,
+    placeholder: 'Please Enter Name'
+  },
+  {
+    type: 'email',
+    label: 'Email',
+    key: 'email',
+    required: true,
+    hidden: false,
+    readOnly: false,
+    placeholder: 'Please Enter Email'
+  }
+]
 
 export default function Profile() {
   const [msg, setMsg] = useState('')
@@ -46,29 +74,7 @@ export default function Profile() {
   return (
     <main className='flex-1 flex flex-col items-center justify-center p-3'>
       <Alert content={msg} state={status} />
-      <form ref={form} className='w-full flex flex-col items-center' action={updateAction}>
-        <header className='text-2xl font-blod w-1/2'>
-          Profile
-        </header>
-        <input name='id' type='text' required readOnly className='hidden' />
-        <div className='w-1/2 p-5 flex items-center justify-center'>
-          <label className='w-24 text-gray-400' htmlFor="name">Name</label>
-          <input id='name' name='name' type='text' required className='form-input flex-1 rounded-lg' placeholder='Please Enter Name' />
-        </div>
-        <div className='w-1/2 p-5 flex items-center justify-center'>
-          <label className='w-24 text-gray-400' htmlFor="email">Email</label>
-          <input id='email' name='email' type='email' required className='form-input flex-1 rounded-lg' placeholder='Please Enter Email' />
-        </div>
-        <div className='w-1/2 p-5 flex items-center'>
-          <label className='w-24 text-gray-400'></label>
-          <div className='flex-1'>
-            <SubmitButton
-              btnText='Save'
-              className='w-full text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-200 rounded-xl p-2'
-            />
-          </div>
-        </div>
-      </form>
+      <Form ref={form} action={updateAction} title='Profile' btnTxt='Save' items={formItems} />
     </main>
   )
 }
