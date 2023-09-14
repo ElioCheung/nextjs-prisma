@@ -1,11 +1,10 @@
 'use server'
+import 'server-only'
 
 import prisma from '@/common/prisma'
 import { loginSchema, updateSchema } from '@/common/validation/auth'
-import { User } from '@prisma/client'
 import { verify } from 'argon2'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { ZodError } from 'zod'
 
 export async function login(data: FormData) {
