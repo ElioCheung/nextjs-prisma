@@ -6,9 +6,9 @@ export interface FormItemProps {
   type: HTMLInputTypeAttribute
   label?: string
   key: string
-  required: boolean
-  hidden: boolean
-  readOnly: boolean
+  required?: boolean
+  hidden?: boolean
+  readOnly?: boolean
   placeholder?: string
   className?: string
 }
@@ -27,12 +27,12 @@ const Form = ({ title, id, items, btnTxt, action }: FormProps, ref: ForwardedRef
 
   const body: JSX.Element[] = items.map((item) => {
     if (item.hidden) {
-      return <input id={item.key} name={item.key} key={item.key} required={item.required} readOnly={item.readOnly} placeholder={item.placeholder} className='hidden' />
+      return <input type={item.type} id={item.key} name={item.key} key={item.key} required={item.required} readOnly={item.readOnly} placeholder={item.placeholder} className='hidden' />
     } else {
       return (
         <div className='w-1/2 p-5 flex items-center justify-center' key={item.key}>
           <label className='w-24 text-gray-400' htmlFor={item.key}>{item.label || item.key}</label>
-          <input name={item.key} key={item.key} required={item.required} readOnly={item.readOnly} placeholder={item.placeholder} id={item.key} className='form-input flex-1 rounded-lg' />
+          <input type={item.type} name={item.key} key={item.key} required={item.required} readOnly={item.readOnly} placeholder={item.placeholder} id={item.key} className='form-input flex-1 rounded-lg' />
         </div>
       )
     }
