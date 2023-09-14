@@ -2,8 +2,8 @@
 import 'server-only'
 
 import prisma from '@/common/prisma'
-import { loginSchema, updateSchema } from '@/common/validation/auth'
-import { verify } from 'argon2'
+import { loginSchema, updateSchema, signUpSchema } from '@/common/validation/auth'
+import { verify, hash } from 'argon2'
 import { revalidatePath } from 'next/cache'
 import { ZodError } from 'zod'
 
@@ -135,6 +135,79 @@ export async function updateUser(data: FormData) {
     if (e instanceof Error) {
       return {
         err: 'login:failed',
+        msg: e.message,
+        data: null,
+      }
+    }
+  }
+}
+
+export async function signup(data: FormData) {
+  try {
+    const signupInput  = await signUpSchema.parseAsync({
+      name: data.get('name'),
+      email: data.get('email'),
+      password: data.get('password'),
+      passwordConfirm: data.get('confirmPassword'),
+    }) 
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: signupInput.email,
+        OR: [
+          {
+            name: {
+              equals: signupInput.name,
+            }
+          }
+        ]
+      },
+    })
+  
+    if (user) {
+      return {
+        err: 'signup:failed',
+        msg: 'Duplicate email address.',
+        data: null,
+      }
+    }
+
+    const newUser = await prisma.user.create({
+      data: {
+        name: signupInput.name,
+        email: signupInput.email,
+        password: await hash(signupInput.password),
+      }
+    })
+
+    return {
+      err: 'signup:ok',
+      msg: '',
+      data: {
+        ...newUser,
+      }
+    }
+  } catch (e) {
+    if (e instanceof ZodError) {
+      let msg: string = ''
+
+      const { issues } = e
+      for (const item of issues) {
+        msg = item.message
+        break
+      }
+      console.log(issues)
+
+      return {
+        err: 'signup:failed',
+        msg: msg,
+        data: null,
+      }
+    }
+
+    if (e instanceof Error) {
+      return {
+        err: 'signup:failed',
         msg: e.message,
         data: null,
       }
