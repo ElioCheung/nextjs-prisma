@@ -6,6 +6,7 @@ import { loginSchema, updateSchema, signUpSchema } from '@/common/validation/aut
 import { verify, hash } from 'argon2'
 import { revalidatePath } from 'next/cache'
 import { ZodError } from 'zod'
+import { createPostSchema } from '@/common/validation/post'
 
 export async function login(data: FormData) {
   try {
@@ -208,6 +209,55 @@ export async function signup(data: FormData) {
     if (e instanceof Error) {
       return {
         err: 'signup:failed',
+        msg: e.message,
+        data: null,
+      }
+    }
+  }
+}
+
+export async function createPost(data: FormData) {
+  try {
+    const postInput  = await createPostSchema.parseAsync({
+      authorId: data.get('authorId'),
+      title: data.get('title'),
+      content: data.get('content') || '',
+      published: !!data.get('published'),
+    })
+
+    const post = await prisma.post.create({
+      data: {
+        ...postInput,
+      }
+    })
+
+    return {
+      err: 'create:post:ok',
+      msg: '',
+      data: {
+        id: post.id,
+      },
+    }
+  } catch (e) {
+    if (e instanceof ZodError) {
+      let msg: string = ''
+
+      const { issues } = e
+      for (const item of issues) {
+        msg = item.message
+        break
+      }
+
+      return {
+        err: 'create:post:failed',
+        msg: msg,
+        data: null,
+      }
+    }
+
+    if (e instanceof Error) {
+      return {
+        err: 'create:post:failed',
         msg: e.message,
         data: null,
       }
