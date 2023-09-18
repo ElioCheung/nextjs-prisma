@@ -20,16 +20,19 @@ export default async function Home() {
   const posts = await getPosts()
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      {
-        posts.length ? (
-          posts.map(post => <Post post={post} key={post.id} />)
-        ) : (
-          <div className='flex-1 flex items-center justify-center'>
-            <p className='text-2lg text-gray-400'>No Data</p>
-          </div>
-        )
-      }
-    </Suspense>
+    <main className='flex-1 flex flex-col items-center'>
+      <Suspense fallback={<p>Loading...</p>}>
+        {
+          posts.length ? (
+            posts.map(post => <Post post={post} key={post.id} />)
+          ) : (
+            <div className='flex-1 flex items-center justify-center'>
+              <p className='text-2lg text-gray-400'>No Data</p>
+            </div>
+          )
+        }
+      </Suspense>
+    </main>
+
   )
 }
