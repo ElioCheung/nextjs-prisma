@@ -115,3 +115,10 @@
       现象：在/app/signin/page.tsx中，用户输入关键信息，登录成功，重定向至首页，发现Menu并未更新，还是之前未登录的状态
 
       解决方法：在Menu组件中的useEffect中添加依赖usePathname的依赖，当路由发生改变时，检查localstorage存储的token，以更新Menu
+
+  3. 使用generateStaticParams导致类型不匹配？
+
+      路径：/app/post/[id]/page.tsx
+      由于post的id类型为number。但是，路径中匹配的类型为string，会出现错误。故，需将类型进行转换。
+
+      好处：使用generateStaticParams与动态路由结合，从而在*构建*时生成静态路由，提升加载速度，而不是在请求时按需生成。
