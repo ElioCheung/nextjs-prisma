@@ -11,9 +11,15 @@ export default function Post({ post }: PostProps) {
   const authorName = post.author ? post.author.name : 'Unknown author'
 
   return (
-    <Link href={`/post/${post.id}`} className='p-8'>
-      <h2>{post.title}</h2>
-      <small>{authorName}</small>
+    <Link
+      href={`/post/${post.id}`}
+      className='p-2 hover:bg-violet-100 hover:cursor-pointer border-b-2 max-w-4xl w-full'
+    >
+      <h2 className='text-lg font-bold'>{post.title}</h2>
+      <div className='w-full inline-flex justify-between'>
+        <small>time: {post.updatedAt.toDateString() || post.createdAt.toDateString()}</small>
+        <small>author: {authorName}</small>
+      </div>
     </Link>
   )
 }
