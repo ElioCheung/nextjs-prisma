@@ -3,17 +3,24 @@
 import Link from 'next/link'
 import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 
-export default function UserLink() {
+type UserLinkProps = {
+  userId: string
+}
+
+export default function UserLink({ userId }: UserLinkProps) {
+  const pathname = usePathname()
+  const reserachParams = useSearchParams()
+  const timeStamp = reserachParams?.get('u')
 
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId') as string
-    fetch(`/api/user/${userId}`, { cache: 'no-store' })
+    fetch(`/api/user/${userId}`)
       .then(res => res.json())
       .then(res => setUser(res))
-  })
+  }, [pathname, timeStamp, userId])
 
   return (
     <>

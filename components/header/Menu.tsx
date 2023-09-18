@@ -46,7 +46,7 @@ export default function Menu() {
           authroized && id ?
             (
               <>
-                <UserLink />
+                <UserLink userId={id} />
                 <p className='text-lg text-gray-400 hover:text-blue-600 mr-2' onClick={signout}>SignOut</p>
               </>
             )
