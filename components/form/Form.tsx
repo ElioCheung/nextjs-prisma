@@ -29,7 +29,7 @@ const Form = ({ title, id, items, btnTxt, action }: FormProps, ref: ForwardedRef
     if (item.hidden) {
       return <input type={item.type} id={item.key} name={item.key} key={item.key} required={item.required} readOnly={item.readOnly} placeholder={item.placeholder} className='hidden' />
     } else {
-      const classes = item.type === 'text' ? 'form-input flex-1 rounded-lg' : item.type === 'textarea' ? 'form-textarea flex-1 rounded-lg' : 'form-checkbox'
+      const classes = item.type === 'textarea' ? 'form-textarea flex-1 rounded-lg' : item.type === 'checkbox' ? 'form-checkbox' : 'form-input flex-1 rounded-lg'
       return (
         <div className='w-1/2 p-5 flex items-center' key={item.key}>
           <label className='w-24 text-gray-400' htmlFor={item.key}>{item.label || item.key}</label>
