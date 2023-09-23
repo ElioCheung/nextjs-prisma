@@ -1,4 +1,5 @@
 import prisma from '@/common/prisma'
+import Link from 'next/link'
 
 export async function generateStaticParams() {
   const posts = await prisma.post.findMany({
@@ -33,7 +34,12 @@ export default async function PostDetail({ params }: PostDetailProps) {
   return (
     <main className='flex-1 flex flex-col items-center'>
       <div className='max-w-4xl w-full py-4'>
-        <h1 className='font-bold text-2xl leading-8'>{post.title}</h1>
+        <div className='inline-flex items-center'>
+          <Link href={'/'} className='inline-flex items-center'>
+            <span className="icon-[mdi--backburger] text-2xl hover:cursor-pointer mr-2 hover:text-violet-600"></span>
+          </Link>
+          <h1 className='font-bold text-2xl leading-8'>{post.title}</h1>
+        </div>
         <div className='w-full inline-flex justify-between items-center'>
           <small>Created: <strong>{post.updatedAt.toDateString()}</strong></small>
           <small>Author: <strong>{post.author?.name}</strong></small>
